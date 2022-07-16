@@ -14,10 +14,9 @@ const fake = {
   }
 }
 
-export function socketServer (peers: Map<string, WebRTCStarSocket>, hasMetrics: boolean, tls: boolean) {
+export function socketServer (peers: Map<string, WebRTCStarSocket>, hasMetrics: boolean) {
   const io = new Server({
     allowEIO3: true, // allow socket.io v2 clients to connect
-    secure: tls
   })
   // @ts-expect-error types are different?
   io.on('connection', (socket) => handle(socket))

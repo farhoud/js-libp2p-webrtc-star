@@ -43,7 +43,7 @@ export async function sigServer (options: Options = {}) {
     tls: options.tls
   }), {
     peers,
-    io: socketServer(peers, options.metrics ?? false, !!options.tls)
+    io: socketServer(peers, options.metrics ?? false)
   })
 
   http.io.attach(http.listener, {
