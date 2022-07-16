@@ -14,10 +14,16 @@ const currentDir = dirname(fileURLToPath(import.meta.url))
 
 const log = config.log
 
+interface TLS {
+  key: string
+  cert: string
+}
+
 interface Options {
   port?: number
   host?: string
   metrics?: boolean
+  tls?: TLS
 }
 
 export interface SigServer extends Server {
@@ -33,10 +39,11 @@ export async function sigServer (options: Options = {}) {
   const http: SigServer = Object.assign(new Server({
     ...config.hapi.options,
     port,
-    host
+    host,
+    tls: options.tls
   }), {
     peers,
-    io: socketServer(peers, options.metrics ?? false)
+    io: socketServer(peers, options.metrics ?? false, !!options.tls)
   })
 
   http.io.attach(http.listener, {

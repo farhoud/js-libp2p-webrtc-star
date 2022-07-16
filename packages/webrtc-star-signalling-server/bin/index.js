@@ -10,19 +10,36 @@ import { createRequire } from 'module'
 const require = createRequire(import.meta.url)
 const info = require('../package.json')
 
+
+
 const argv = minimist(process.argv.slice(2), {
   alias: {
     p: 'port',
     h: 'host',
-    'disable-metrics': 'disableMetrics'
+    'disable-metrics': 'disableMetrics',
+    'key': 'key',
+    'cert': 'cert'
   }
 })
+
+const tlsLoader = () => {
+  const cert = argv.cert || process.env.CERT
+  const key = argv.key || process.env.KEY
+  if(cert && key) {
+    return {
+      key: fs.readFileSync(cert),
+      cert: fs.readFileSync(key)
+    }
+  }
+  return {}
+}
 
 ;(async () => {
   const server = await sigServer({
     port: argv.port || process.env.PORT || 9090,
     host: argv.host || process.env.HOST || '0.0.0.0',
-    metrics: !(argv.disableMetrics || process.env.DISABLE_METRICS)
+    metrics: !(argv.disableMetrics || process.env.DISABLE_METRICS),
+    tls: tlsLoader()
   })
 
   console.log(`${info.name}@${info.version}`)
