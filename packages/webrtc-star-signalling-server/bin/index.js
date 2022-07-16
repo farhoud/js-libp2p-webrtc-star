@@ -6,6 +6,7 @@
 import { sigServer } from '../dist/src/index.js'
 import minimist from 'minimist'
 import { createRequire } from 'module'
+import fs from "fs"
 
 const require = createRequire(import.meta.url)
 const info = require('../package.json')
