@@ -18,8 +18,6 @@ const argv = minimist(process.argv.slice(2), {
     p: 'port',
     h: 'host',
     'disable-metrics': 'disableMetrics',
-    'key': 'key',
-    'cert': 'cert'
   }
 })
 
